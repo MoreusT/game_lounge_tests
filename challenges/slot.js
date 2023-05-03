@@ -43,21 +43,13 @@ const reel1 = ['cherry', 'lemon', 'apple',  'lemon', 'banana', 'banana', 'lemon'
 function calculateResult(position1, position2, position3) {
   const row = [] // create constant variable that I will use to fill with all 9 items that reels have after spin.
 
-  // for loop to fill the row constant variable. "if" states used to prevent return undefined if position in higher then array lenght.
+  // for loop to fill the row constant variable.
   for(let i = 0; i < 3; i++) {
-    if(position1 > reel1.length - 1) position1 = 0;
-    if(position2 > reel2.length - 1) position2 = 0;
-    if(position3 > reel3.length - 1) position3 = 0;
-    row.push(reel1[position1], reel2[position2], reel3[position3]);
+    row.push([reel1[position1 % 8], reel2[position2 % 8], reel3[position3 % 8]]);
     position1++;
     position2++;
     position3++;
   }
-
-  // 3 constants that represents each row of the machine.
-  const row1 = row.slice(0, 3);
-  const row2 = row.slice(3, 6);
-  const row3 = row.slice(6, 9);
 
   // function that counts how many coins each row won.
   function countCoins(arr) {
@@ -93,7 +85,11 @@ function calculateResult(position1, position2, position3) {
     return coins;
   }
 
-  const total = countCoins(row1) + countCoins(row2) + countCoins(row3);
+  // create total variable and go through each row
+  let total = 0;
+  for(let i = 0; i < 3; i++) {
+    total += countCoins(row[i]);
+  }
   return total;
 }
 
